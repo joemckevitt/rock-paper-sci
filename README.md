@@ -44,4 +44,3 @@ the score. Stop the tunnel when you're done.
 
 The score lives in memory, so it resets when the server restarts.
 # rock-paper-sci
-# rock-paper-sci
