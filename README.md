@@ -1,6 +1,6 @@
 # rps-api
 
-Rock, paper, scissors over REST and MCP. TypeScript, Fastify, Zod.
+Rock, paper, scissors over REST and MCP. TypeScript, Fastify, Zod, OpenAPI.
 
 ## Run locally
 
@@ -10,6 +10,12 @@ Needs Node 22+.
     npm run dev
 
 Server runs on http://localhost:3000.
+
+## API docs
+
+Interactive Swagger UI is at http://localhost:3000/docs, where you can try every
+endpoint from the browser. The OpenAPI 3.1 spec is at `/docs/json` and `/docs/yaml`,
+generated from the same Zod schemas that validate requests and responses.
 
 ## REST endpoints
 
@@ -43,4 +49,13 @@ The connector has no authentication. Anyone with the URL can play and reset
 the score. Stop the tunnel when you're done.
 
 The score lives in memory, so it resets when the server restarts.
-# rock-paper-sci
+
+## Deploy free on Render
+
+1. Push this repo to GitHub
+2. In Render, choose New > Blueprint and pick the repo. `render.yaml` sets up a
+   free Docker web service with a health check
+3. Use `https://<your-service>.onrender.com/mcp` as the Claude connector URL
+
+Free services sleep after 15 minutes without traffic and take about a minute
+to wake. The score resets when that happens.
