@@ -62,10 +62,22 @@ The score lives in memory, so it resets when the server restarts.
 Free services sleep after 15 minutes without traffic and take about a minute
 to wake. The score resets when that happens.
 
+### Deploy on merge to main
+
+`.github/workflows/deploy.yml` builds and tests every push to `main`, then
+deploys that commit to Render and waits for it to go live. It needs a Render
+API key (Account Settings > API Keys) stored as the `RENDER_API_KEY` repo
+secret:
+
+    gh secret set RENDER_API_KEY
+
+Render's own auto-deploy is off so each commit deploys once, after tests pass.
+You can also rerun a deploy from the Actions tab with Run workflow.
+
 ### Deploy from the command line
 
-Auto-deploy is off, so pushes to GitHub don't deploy. Deploy with the
-[Render CLI](https://render.com/docs/cli) instead.
+Deploy any pushed commit by hand with the
+[Render CLI](https://render.com/docs/cli).
 
 One-time setup:
 
