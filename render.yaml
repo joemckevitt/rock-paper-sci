@@ -1,0 +1,8 @@
+services:
+  - type: web
+    name: rps-api
+    runtime: docker
+    plan: free
+    healthCheckPath: /health
+    # Deploys are triggered from the command line with `npm run deploy`
+    autoDeploy: false
