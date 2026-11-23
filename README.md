@@ -61,3 +61,22 @@ The score lives in memory, so it resets when the server restarts.
 
 Free services sleep after 15 minutes without traffic and take about a minute
 to wake. The score resets when that happens.
+
+### Deploy from the command line
+
+Auto-deploy is off, so pushes to GitHub don't deploy. Deploy with the
+[Render CLI](https://render.com/docs/cli) instead.
+
+One-time setup:
+
+    brew install render
+    render login
+    render services        # copy the rps-api service ID (srv-...)
+    echo "RENDER_SERVICE_ID=srv-..." >> .env
+
+Then, after committing and pushing:
+
+    npm run deploy
+
+This deploys the current commit, streams the build logs and exits non-zero if
+the deploy fails.
