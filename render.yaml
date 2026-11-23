@@ -4,5 +4,6 @@ services:
     runtime: docker
     plan: free
     healthCheckPath: /health
-    # Deploys are triggered from the command line with `npm run deploy`
+    # Deploys are triggered by the GitHub Action on merge to main, or from
+    # the command line with `npm run deploy`
     autoDeploy: false
