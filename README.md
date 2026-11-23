@@ -1,3 +1,5 @@
+<!-- Hello, world! -->
+
 # rps-api
 
 Rock, paper, scissors over REST and MCP. TypeScript, Fastify, Zod, OpenAPI.
