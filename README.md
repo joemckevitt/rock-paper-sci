@@ -77,8 +77,13 @@ to wake. The score resets when that happens.
 
 ### Deploy on merge to main
 
-`.github/workflows/deploy.yml` builds and tests every push to `main`, then
-deploys that commit to Render and waits for it to go live. It needs a Render
+`.github/workflows/deploy.yml` typechecks, builds and tests every pull request
+and every push to `main`. On `main` it then deploys that commit to Render and
+waits for it to go live.
+
+`main` is protected: changes must go through a pull request, and the `test`
+job must pass before it can merge. This applies to admins too, and force
+pushes and deleting `main` are blocked. It needs a Render
 API key (Account Settings > API Keys) stored as the `RENDER_API_KEY` repo
 secret:
 
