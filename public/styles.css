@@ -1,0 +1,275 @@
+:root {
+  --bg: #f6f5f1;
+  --surface: #ffffff;
+  --text: #1d1d1f;
+  --muted: #5f5f66;
+  --border: #dcdad3;
+  --accent: #3b5bdb;
+  --win: #1f7a3a;
+  --lose: #b3261e;
+  --draw: #8a6100;
+  --error-bg: #fdecea;
+  --shadow: 0 1px 2px rgb(0 0 0 / 0.06), 0 4px 12px rgb(0 0 0 / 0.06);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #141416;
+    --surface: #1f1f23;
+    --text: #f2f2f4;
+    --muted: #a3a3ad;
+    --border: #34343b;
+    --accent: #8ea2ff;
+    --win: #5fd07f;
+    --lose: #ff8a80;
+    --draw: #f2c14e;
+    --error-bg: #3a1d1b;
+    --shadow: none;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.4;
+}
+
+main {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 24px 16px 40px;
+}
+
+h1 {
+  margin: 0 0 4px;
+  font-size: 1.75rem;
+  text-align: center;
+}
+
+h2 {
+  margin: 0 0 12px;
+  font-size: 1.1rem;
+}
+
+.hint {
+  margin: 0 0 20px;
+  color: var(--muted);
+  text-align: center;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+
+button:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.moves {
+  display: grid;
+  gap: 12px;
+}
+
+.move {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 72px;
+  padding: 12px 16px;
+  border: 2px solid var(--border);
+  border-radius: 16px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  font-size: 1.25rem;
+  font-weight: 600;
+  transition: transform 0.1s ease, border-color 0.15s ease;
+}
+
+.move:not(:disabled):hover {
+  border-color: var(--accent);
+}
+
+.move:not(:disabled):active {
+  transform: scale(0.97);
+}
+
+.move .emoji {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+@media (min-width: 480px) {
+  .moves {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .move {
+    flex-direction: column;
+    gap: 6px;
+    min-height: 120px;
+  }
+
+  .move .emoji {
+    font-size: 2.75rem;
+  }
+}
+
+.round {
+  min-height: 160px;
+  margin: 24px 0;
+  text-align: center;
+}
+
+.faceoff {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+}
+
+.faceoff[hidden] {
+  display: none;
+}
+
+.hand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.hand-emoji {
+  font-size: 3.5rem;
+  line-height: 1;
+}
+
+.hand-label,
+.vs {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.message {
+  min-height: 1.5em;
+  margin: 16px 0 0;
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+
+.message.win {
+  color: var(--win);
+}
+
+.message.lose {
+  color: var(--lose);
+}
+
+.message.draw {
+  color: var(--draw);
+}
+
+.message.error {
+  padding: 12px;
+  border-radius: 12px;
+  background: var(--error-bg);
+  color: var(--lose);
+  font-weight: 500;
+}
+
+.thinking .hand-emoji {
+  animation: shake 0.3s ease-in-out infinite;
+}
+
+.revealed .hand:last-child .hand-emoji {
+  animation: pop 0.35s ease-out;
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(0.4);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.15);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+.scoreboard {
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--surface);
+}
+
+.score {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin: 0 0 16px;
+  text-align: center;
+}
+
+.score dt {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.score dd {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.reset {
+  width: 100%;
+  min-height: 48px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: transparent;
+  color: var(--muted);
+}
+
+.reset:not(:disabled):hover {
+  border-color: var(--lose);
+  color: var(--lose);
+}
