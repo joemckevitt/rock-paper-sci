@@ -3,12 +3,10 @@ name: Deploy to Render
 on:
   push:
     branches: [main]
+  # Tests run on PRs; branch protection on main requires the test job to pass
+  pull_request:
+    branches: [main]
   workflow_dispatch:
-
-# One deploy at a time; a newer merge waits for the running deploy to finish
-concurrency:
-  group: render-deploy
-  cancel-in-progress: false
 
 env:
   RENDER_SERVICE_ID: srv-dc25uvtg1s2s7392lnig
@@ -23,12 +21,19 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - run: npm run typecheck
       - run: npm run build
       - run: npm test
 
   deploy:
     needs: test
+    # Only deploy merges to main (and manual runs), never PRs
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
+    # One deploy at a time; a newer merge waits for the running deploy to finish
+    concurrency:
+      group: render-deploy
+      cancel-in-progress: false
     steps:
       - name: Deploy commit and wait for it to go live
         env:

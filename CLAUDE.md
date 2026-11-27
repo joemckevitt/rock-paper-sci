@@ -34,11 +34,11 @@ There is no linter or formatter configured.
 
 Hosted on Render as the free Docker web service `rps-api` (`srv-dc25uvtg1s2s7392lnig`, https://rps-api-nrwa.onrender.com), managed by the `render.yaml` Blueprint. Render's own auto-deploy is off; deploys happen two ways:
 
-- `.github/workflows/deploy.yml` runs on every push to `main`: build + test, then deploys that commit through the Render API (`RENDER_API_KEY` repo secret) and polls until it is live.
+- `.github/workflows/deploy.yml` runs typecheck, build and test on every PR and push to `main`; on `main` only, it then deploys that commit through the Render API (`RENDER_API_KEY` repo secret) and polls until it is live.
 - `npm run deploy` (`scripts/deploy.sh`) deploys the current commit with the Render CLI. It needs `RENDER_SERVICE_ID` in `.env` and refuses to run with uncommitted or unpushed changes, because Render builds from GitHub.
 
 The score is in memory, so it resets on every deploy and whenever the free instance sleeps.
 
 ## Workflow
 
-Changes go on a branch and into `main` by pull request (merge commits). Merging to `main` deploys to production.
+`main` is protected (admins included): no direct or force pushes. Changes go on a branch and into `main` by pull request (merge commits), and the `test` job must pass first. Merging to `main` deploys to production.
