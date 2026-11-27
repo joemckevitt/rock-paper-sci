@@ -38,13 +38,17 @@ jobs:
           api=https://api.render.com/v1/services/$RENDER_SERVICE_ID/deploys
           auth="Authorization: Bearer $RENDER_API_KEY"
 
-          deploy_id=$(curl -sf -X POST "$api" -H "$auth" -H "Content-Type: application/json" \
-            -d "{\"commitId\":\"$GITHUB_SHA\"}" | jq -r .id)
-          echo "Started deploy $deploy_id for ${GITHUB_SHA:0:7}"
+          curl -sf -X POST "$api" -H "$auth" -H "Content-Type: application/json" \
+            -d "{\"commitId\":\"$GITHUB_SHA\"}" > /dev/null
+          echo "Requested deploy of ${GITHUB_SHA:0:7}"
 
+          # Track the newest deploy of this commit rather than the ID from the POST:
+          # Render returns no ID when it queues the deploy behind another one, and a
+          # render.yaml change starts its own deploy of the same commit.
           for _ in $(seq 1 60); do
-            status=$(curl -sf "$api/$deploy_id" -H "$auth" | jq -r .status)
-            echo "$status"
+            read -r deploy_id status < <(curl -sf "$api?limit=10" -H "$auth" | jq -r \
+              '[.[].deploy | select(.commit.id == env.GITHUB_SHA)][0] // {} | "\(.id) \(.status // "pending")"')
+            echo "$deploy_id $status"
             case $status in
               live) exit 0 ;;
               *failed|canceled|deactivated) exit 1 ;;
