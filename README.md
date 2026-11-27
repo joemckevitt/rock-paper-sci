@@ -11,6 +11,20 @@ Needs Node 22+.
 
 Server runs on http://localhost:3000.
 
+## Play in the browser
+
+Open http://localhost:3000/ (or https://rps-api-nrwa.onrender.com/ for the
+deployed version) on a phone or computer. Tap rock, paper or scissors to play
+a round against the computer. The page shows the running score and has a reset
+button.
+
+Everyone shares one scoreboard, including players using the REST API and MCP,
+so resetting clears it for everyone.
+
+The page is plain HTML, CSS and JavaScript in `public/`, served by the same
+Fastify app. Helmet's content security policy blocks inline scripts and
+styles, so keep them in the separate `.js` and `.css` files.
+
 ## API docs
 
 Interactive Swagger UI is at http://localhost:3000/docs, where you can try every
@@ -19,6 +33,7 @@ generated from the same Zod schemas that validate requests and responses.
 
 ## REST endpoints
 
+- `GET /` serves the web page (not in the API docs)
 - `POST /play` with `{"move":"rock"}` plays a round and returns the result plus the running score
 - `GET /score` returns wins, losses, draws and rounds played
 - `DELETE /score` resets the score

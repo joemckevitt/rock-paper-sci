@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <title>Rock, Paper, Scissors</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/styles.css" />
+    <script src="/app.js" defer></script>
+  </head>
+  <body>
+    <main>
+      <h1>Rock, Paper, Scissors</h1>
+      <p class="hint">Pick your move</p>
+
+      <div class="moves">
+        <button type="button" class="move" data-move="rock" aria-label="Play rock">
+          <span class="emoji" aria-hidden="true">🪨</span>
+          <span class="label">Rock</span>
+        </button>
+        <button type="button" class="move" data-move="paper" aria-label="Play paper">
+          <span class="emoji" aria-hidden="true">📄</span>
+          <span class="label">Paper</span>
+        </button>
+        <button type="button" class="move" data-move="scissors" aria-label="Play scissors">
+          <span class="emoji" aria-hidden="true">✂️</span>
+          <span class="label">Scissors</span>
+        </button>
+      </div>
+
+      <section class="round" aria-live="polite">
+        <div class="faceoff" id="faceoff" hidden>
+          <div class="hand">
+            <span class="hand-emoji" id="player-emoji"></span>
+            <span class="hand-label">You</span>
+          </div>
+          <span class="vs">vs</span>
+          <div class="hand">
+            <span class="hand-emoji" id="computer-emoji"></span>
+            <span class="hand-label">Computer</span>
+          </div>
+        </div>
+        <p class="message" id="message"></p>
+      </section>
+
+      <section class="scoreboard" aria-labelledby="score-heading">
+        <h2 id="score-heading">Score</h2>
+        <dl class="score">
+          <div><dt>Wins</dt><dd id="wins">–</dd></div>
+          <div><dt>Losses</dt><dd id="losses">–</dd></div>
+          <div><dt>Draws</dt><dd id="draws">–</dd></div>
+          <div><dt>Played</dt><dd id="played">–</dd></div>
+        </dl>
+        <button type="button" class="reset" id="reset">Reset score</button>
+      </section>
+    </main>
+  </body>
+</html>

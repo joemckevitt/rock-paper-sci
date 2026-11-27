@@ -12,7 +12,7 @@ npm test                                # vitest run, all tests
 npx vitest run src/app.test.ts          # one file
 npx vitest run -t "rejects a bad move"  # one test by name
 npm run build                           # tsc -p tsconfig.build.json -> dist/ (excludes *.test.ts)
-npx tsc --noEmit                        # typecheck including tests
+npm run typecheck                       # tsc --noEmit, includes tests
 npm run deploy                          # deploy current pushed commit to Render (see Deployment)
 ```
 
@@ -27,6 +27,7 @@ There is no linter or formatter configured.
 - **Validation errors** are reshaped by the custom error handler into `{ error, details: [{ path, message }] }` with status 400, matching `ErrorResponse`.
 - **MCP is stateless Streamable HTTP.** `POST /mcp` builds a fresh `McpServer` and transport per request, then `reply.hijack()`s so the MCP SDK writes the raw response. Its JSON-RPC body is validated by the SDK, not Zod. `GET`/`DELETE /mcp` return 405. MCP clients must send `Accept: application/json, text/event-stream`.
 - **Security middleware:** Helmet's CSP is extended with Swagger UI's script/style hashes (`instance.swaggerCSP`), so `swagger-ui` must be registered before `helmet`. Rate limit is 60 req/min per IP; it uses the real client IP only when `TRUST_PROXY=true`. Body limit is 64 KB for MCP messages.
+- **Web page:** `public/` (plain HTML/CSS/JS, no build step) is served by `@fastify/static` at `/`, hidden from the OpenAPI spec. It is registered with `wildcard: false`, so files are picked up at startup: restart the dev server after adding one. The CSP forbids inline `<script>`, `<style>`, `style=""` and `on*=` handlers; put code in the `.js`/`.css` files. The Dockerfile copies `public/` into the runtime image.
 - Imports use `.js` extensions (NodeNext resolution). `noUncheckedIndexedAccess` is on.
 
 ## Deployment

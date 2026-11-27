@@ -1,6 +1,8 @@
+import { join } from "node:path";
 import Fastify, { type FastifyReply } from "fastify";
 import helmet from "@fastify/helmet";
 import rateLimit from "@fastify/rate-limit";
+import fastifyStatic from "@fastify/static";
 import swagger from "@fastify/swagger";
 import swaggerUi from "@fastify/swagger-ui";
 import {
@@ -88,6 +90,13 @@ export async function buildApp({ logger = true } = {}) {
   }));
 
   await app.register(rateLimit, { max: 60, timeWindow: "1 minute" });
+
+  // The web page in public/, served at / and hidden from the OpenAPI spec.
+  // It must not use inline scripts or styles: Helmet's CSP blocks them.
+  await app.register(fastifyStatic, {
+    root: join(import.meta.dirname, "..", "public"),
+    wildcard: false,
+  });
 
   const rateLimited = { 429: RateLimited.describe("Too many requests") };
 
